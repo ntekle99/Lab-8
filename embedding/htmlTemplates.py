@@ -1,44 +1,34 @@
-css = '''
+css = """
 <style>
 .chat-message {
-    padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1rem; display: flex
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.6rem;
+    margin-bottom: 0.7rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    font-size: 0.95rem;
 }
 .chat-message.user {
-    background-color: #2b313e
+    background-color: #eef3ff;
+    border: 1px solid #d9e2ff;
 }
 .chat-message.bot {
-    background-color: #475063
+    background-color: #f7f7f9;
+    border: 1px solid #e8e8ef;
 }
-.chat-message .avatar {
-  width: 20%;
-}
-.chat-message .avatar img {
-  max-width: 78px;
-  max-height: 78px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-.chat-message .message {
-  width: 80%;
-  padding: 0 1.5rem;
-  color: #fff;
-}
-'''
+</style>
+"""
 
-bot_template = '''
-<div class="chat-message bot">
-    <div class="avatar">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Chatbot_img.png" style="max-height: 78px; max-width: 78px; border-radius: 50%; object-fit: cover;">
-    </div>
-    <div class="message">{{MSG}}</div>
-</div>
-'''
-
-user_template = '''
+user_template = """
 <div class="chat-message user">
-    <div class="avatar">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png">
-    </div>    
-    <div class="message">{{MSG}}</div>
+    <strong>You</strong><br/>
+    {{MSG}}
 </div>
-'''
+"""
+
+bot_template = """
+<div class="chat-message bot">
+    <strong>Reviewer</strong><br/>
+    {{MSG}}
+</div>
+"""
