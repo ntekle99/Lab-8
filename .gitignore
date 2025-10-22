@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+
+# Python virtual environment
+.venv/
+__pycache__/
+
+# Llama model weights (too large for GitHub)
+llama.cpp/models/*
+!llama.cpp/models/.gitkeep
+
+# Build artifacts
+*.pyc
+*.pyo
+*.log
+
+# Frontend build
+node_modules/
+dist/
+
+# Environment files
+.env
+.env.*
+
+# IDE / Editor
+.vscode/
+.idea/
