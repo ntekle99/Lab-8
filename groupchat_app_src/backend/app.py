@@ -66,7 +66,7 @@ async def broadcast_message(session: AsyncSession, msg: Message):
         }
     })
 
-async def maybe_answer_with_llm(session: AsyncSession, content: str):
+async def maybe_answer_with_llm(content: str):
     # naive heuristic: reply if the message contains a question mark
     if "?" not in content:
         return
@@ -82,11 +82,14 @@ async def maybe_answer_with_llm(session: AsyncSession, content: str):
         ])
     except Exception as e:
         reply_text = f"(LLM error) {e}"
-    bot_msg = Message(user_id=None, content=reply_text, is_bot=True)
-    session.add(bot_msg)
-    await session.commit()
-    await session.refresh(bot_msg)
-    await broadcast_message(session, bot_msg)
+
+    # Create a new session for the background task
+    async with SessionLocal() as session:
+        bot_msg = Message(user_id=None, content=reply_text, is_bot=True)
+        session.add(bot_msg)
+        await session.commit()
+        await session.refresh(bot_msg)
+        await broadcast_message(session, bot_msg)
 
 # --------- Routes ---------
 @app.on_event("startup")
@@ -145,7 +148,7 @@ async def post_message(payload: MessagePayload, username: str = Depends(get_curr
     await session.refresh(m)
     await broadcast_message(session, m)
     # fire-and-forget LLM answer
-    asyncio.create_task(maybe_answer_with_llm(session, payload.content))
+    asyncio.create_task(maybe_answer_with_llm(payload.content))
     return {"ok": True, "id": m.id}
 
 @app.websocket("/ws")

@@ -7,3 +7,4 @@ python-jose[cryptography]
 python-dotenv
 httpx
 jinja2
+llama-cpp-python
