@@ -1,26 +1,35 @@
 import os
+import hashlib
+import base64
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import jwt, JWTError
-from passlib.context import CryptContext
+import bcrypt
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 
 load_dotenv()
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 security = HTTPBearer()
 
 JWT_SECRET = os.getenv("JWT_SECRET", "change_me")
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "43200"))
 ALGORITHM = "HS256"
 
+def _prehash_password(password: str) -> bytes:
+    """Pre-hash password with SHA256 to avoid bcrypt's 72-byte limitation."""
+    return hashlib.sha256(password.encode('utf-8')).digest()
+
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    prehashed = _prehash_password(password)
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(prehashed, salt)
+    return hashed.decode('utf-8')
 
 def verify_password(plain_password: str, password_hash: str) -> bool:
-    return pwd_context.verify(plain_password, password_hash)
+    prehashed = _prehash_password(plain_password)
+    return bcrypt.checkpw(prehashed, password_hash.encode('utf-8'))
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
