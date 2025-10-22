@@ -1,27 +1,28 @@
-# macOS
+# --- Android build & Gradle ---
+**/build/
+**/.gradle/
+**/local.properties
+*.iml
+
+# --- macOS system files ---
 .DS_Store
 
-# Python virtual environment
+# --- Python virtual environment ---
 .venv/
 __pycache__/
 
-# Llama model weights (too large for GitHub)
+# --- Llama models (large files) ---
 llama.cpp/models/*
 !llama.cpp/models/.gitkeep
 
-# Build artifacts
-*.pyc
-*.pyo
-*.log
-
-# Frontend build
+# --- Node / frontend build ---
 node_modules/
 dist/
 
-# Environment files
+# --- Environment variables ---
 .env
 .env.*
 
-# IDE / Editor
+# --- Editor / IDE configs ---
 .vscode/
 .idea/
