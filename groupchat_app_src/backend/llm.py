@@ -5,6 +5,7 @@ from llama_cpp import Llama
 load_dotenv()
 
 # Configuration for local GGUF model
+# you need to download the model from huggingface and place it in the project root folder for this to work
 MODEL_PATH = os.getenv("MODEL_PATH", "../Llama-3.2-3B-Instruct-IQ3_M.gguf")
 N_CTX = int(os.getenv("N_CTX", "2048"))  # Context window size
 N_GPU_LAYERS = int(os.getenv("N_GPU_LAYERS", "0"))  # Number of layers to offload to GPU (0 = CPU only)
